@@ -25,6 +25,27 @@ class Instructor extends Person {
     grade(student, subject){
         return `${student.name} receives a perfect score on ${subject}`;
     }
+    changeGrade(student){
+        let rand = Math.floor(Math.random() * 5) + 1;
+        let addMinus = Math.floor(Math.random() * 2);
+        let type = ''
+        if (addMinus % 2 === 0){
+            type = '+'
+            student.grade += rand;
+        } else {
+            type = '-'
+            student.grade -= rand;
+        }
+        if (student.grade > 100){
+            student.grade = 100;
+            return `${student.name} has a perfect score of 100`;
+        } else if (student.grade < 0){
+            student.grade = 0;
+            return `${student.name} has a grade of 0 and is riding the struggle bus, which is now in flames.`;
+        } else {
+            return `${this.name} changed ${student.name}'s grade by ${type}${rand} points to ${student.grade}`;
+        }
+    }
 }
 
 class Student extends Person {
@@ -33,6 +54,7 @@ class Student extends Person {
         this.previousBackground = attributes.previousBackground;
         this.className = attributes.className;
         this.favSubjects = attributes.favSubjects;
+        this.grade = attributes.grade;
     }
     listsSubjects(){
         return `${this.name}'s favorite subjects are ${[...this.favSubjects]}`;
@@ -42,6 +64,10 @@ class Student extends Person {
     }
     sprintChallenge(subject){
         return `${this.name} has begun sprint challenge on ${subject}`;
+    }
+    graduate(){
+        return this.grade >= 70 ? `${this.name} graduated from Lambda with a score of ${this.grade}!`
+        : `${this.name} isn't ready to graduate yet. Keep working to get those grades up past 70%!`
     }
 }
 
@@ -91,7 +117,8 @@ const andrew = new Student({
     catchPhrase: `Same same... but different`,
     previousBackground: 'Digital Marketing',
     className: 'Web18',
-    favSubjects: ['Psychology', ' Nootropics', ' Technology', ' Music']
+    favSubjects: ['Psychology', ' Nootropics', ' Technology', ' Music'],
+    grade: 96
 });
 
 const nate = new Student({
@@ -104,7 +131,8 @@ const nate = new Student({
     catchPhrase: `What's a catchphrase?`,
     previousBackground: 'Real Estate',
     className: 'Web19',
-    favSubjects: ['Film History', ' Sports Management', ' Spanish']
+    favSubjects: ['Film History', ' Sports Management', ' Spanish'],
+    grade: 88
 });
 
 // PM Objects
@@ -141,3 +169,5 @@ console.log(steve.standup('web17_pm-steve'));
 console.log(joby.debugsCode(andrew, 'proprototypes'));
 
 // Stretch
+console.log(steve.changeGrade(andrew));
+console.log(nate.graduate());
